@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
@@ -5,9 +6,10 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const User = require("../models/Users");
-// require("dotenv").config();
 
-const JWT_SECRET = "MySuperUltraLongSecretKeyThatIsAtLeast32Chars!!";
+
+
+// const JWT_SECRET = "MySuperUltraLongSecretKeyThatIsAtLeast32Chars!!";
 
 // ============ SIGNUP ===============
 router.post(
@@ -35,7 +37,7 @@ router.post(
       const hash = await bcrypt.hash(req.body.password, salt);
 
       // Generate email verification token
-      const verificationToken = jwt.sign({ email: req.body.email }, JWT_SECRET, { expiresIn: "1d" });
+      const verificationToken = jwt.sign({ email: req.body.email }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
 
       const verificationUrl = `http://localhost:3000/verify/${verificationToken}`;
@@ -55,12 +57,12 @@ router.post(
 
       // Auth token (for login after verify)
       const data = { user: { id: user._id } };
-      const authToken = jwt.sign(data, JWT_SECRET);
+      const authToken = jwt.sign(data, process.env.JWT_SECRET);
 
 
-      const EMAIL_USER = "aaradhanas969@gmail.com";
-      const EMAIL_PASS = "zwwjqlzvlqfyilwl";
-      const FRONTEND_URL = "http://localhost:3000";
+      const EMAIL_USER = process.env.EMAIL_USER;
+      const EMAIL_PASS = process.env.EMAIL_PASS;
+      const FRONTEND_URL = process.env.FRONTEND_URL;
 
 
       const transporter = nodemailer.createTransport({
@@ -133,7 +135,7 @@ router.post(
       }
 
       const data = { user: { id: user._id } };
-      const authToken = jwt.sign(data, JWT_SECRET);
+      const authToken = jwt.sign(data, process.env.JWT_SECRET);
       res.json({ success: true, authToken });
 
     } catch (error) {
@@ -147,7 +149,7 @@ router.post(
 // ============ VERIFY EMAIL ===============
 router.get("/verify/:token", async (req, res) => {
   try {
-    const payload = jwt.verify(req.params.token, JWT_SECRET);
+    const payload = jwt.verify(req.params.token, process.env.JWT_SECRET);
 
     const user = await User.findOne({ email: payload.email });
     if (!user) return res.status(400).json({ message: "User not found" });
@@ -162,18 +164,5 @@ router.get("/verify/:token", async (req, res) => {
     res.status(400).json({ message: "Invalid or expired token" });
   }
 });
-
-
-router.post(
-  "/logOut",
-  async (req, res) => {
-   try{
-     res.status(200).json({success:true,message:"User finally logged Out"})
-   }catch(error){
-     res.status(500).json({error:"Internal server error"});
-   }
-  }
-);
-
 
 module.exports = router;

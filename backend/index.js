@@ -1,3 +1,5 @@
+require("dotenv").config();
+console.log("Loaded MONGO_URI:", process.env.MONGO_URI);
 const express = require('express');
 const app = express();
 var cors = require('cors');

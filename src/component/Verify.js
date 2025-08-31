@@ -15,12 +15,15 @@ const Verify = () => {
                     headers: { "Content-Type": "application/json" },
                 });
 
-                const data = await response.json();
+                await response.json();
+
                 if (response.ok) {
                     setStatus("success");
-                    setTimeout(() => navigate("/login"), 3000); // redirect after 3s
+                    console.log("success");
+                    setTimeout(() => navigate("/home"), 3000); // redirect after 3s
                 } else {
                     setStatus("error");
+                    console.log("error");
                 }
             } catch (err) {
                 console.error(err);
@@ -42,7 +45,7 @@ const Verify = () => {
                 {status === "success" && (
                     <>
                         <h2 className="text-xl font-semibold mb-4 text-green-600">Email Verified! 🎉</h2>
-                        <p>You’ll be redirected to login shortly.</p>
+                        <p>You’ll be redirected to home shortly.</p>
                     </>
                 )}
                 {status === "error" && (

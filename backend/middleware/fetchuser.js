@@ -1,5 +1,6 @@
 var jwt = require('jsonwebtoken');
-const JWT_SECRET = 'MySuperUltraLongSecretKeyThatIsAtLeast32Chars!!';
+require('dotenv').config();
+// const JWT_SECRET = 'MySuperUltraLongSecretKeyThatIsAtLeast32Chars!!';
 
 const fetchuser = (req, res, next) => {
     // Get the user from the jwt token and add id to req object
@@ -8,7 +9,7 @@ const fetchuser = (req, res, next) => {
         return res.status(401).send({ error: "Please authenticate using a valid token" });
     }
     try {
-        const data = jwt.verify(token, JWT_SECRET);
+        const data = jwt.verify(token, process.env.JWT_SECRET);
         req.user = data.user;
         next();
     } catch (error) {

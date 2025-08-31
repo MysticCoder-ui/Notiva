@@ -1,5 +1,6 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
-const mongoURI = "mongodb://localhost:27017/notiva"; // Replace with your MongoDB URI
+const mongoURI = process.env.MONGO_URI; // Replace with your MongoDB URI
 // "C:\Program Files\MongoDB\Server\8.0\bin\mongod.exe" --dbpath="C:\data\db"
 
 const connectToMongo = async () => {
