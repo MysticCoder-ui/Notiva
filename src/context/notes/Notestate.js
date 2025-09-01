@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Notecontent from "./Notecontent";
 
 const Notestate = (props) => {
-
+    const host = "https://notiva-3.onrender.com";
     // Hardcoded initial notes
     const initialNotes = [];
 
@@ -11,7 +11,7 @@ const Notestate = (props) => {
     // Show all notes
     const showNote = async () => {
         try {
-            const response = await fetch("http://localhost:5000/note/fetchallNotes", {
+            const response = await fetch(`${host}/note/fetchallNotes`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -37,7 +37,7 @@ const Notestate = (props) => {
     // Add a note (frontend only)
     const addNote = async (title, description) => {
         try {
-            const response = await fetch("http://localhost:5000/note/addNote", {
+            const response = await fetch(`${host}/note/addNote`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -62,7 +62,7 @@ const Notestate = (props) => {
     // Delete a note (frontend only)
     const deleteNote = async (id) => {
         try {
-            const response = await fetch(`http://localhost:5000/note/deleteNote/${id}`, {
+            const response = await fetch(`${host}/note/deleteNote/${id}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
@@ -87,16 +87,16 @@ const Notestate = (props) => {
     // Edit a note (frontend only)
     const editNote = async (id, newtitle, newdescription) => {
         try {
-            const response = await fetch(`http://localhost:5000/note/updateNote/${id}`, {
+            const response = await fetch(`${host}/note/updateNote/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                     "auth-token": localStorage.getItem('token'),
                 },
-                body: JSON.stringify({ title:newtitle, description:newdescription }),
+                body: JSON.stringify({ title: newtitle, description: newdescription }),
             });
 
-             if (!response.ok) {
+            if (!response.ok) {
                 throw new Error("Failed to edit note");
             }
 
