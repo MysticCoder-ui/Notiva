@@ -9,7 +9,7 @@ const port = process.env.PORT||5000;
 connectToMongo();
 
 app.use(cors({
-  origin: `${process.env.FRONTEND_URL}.vercel.app`, // replace later
+  origin: `https://notiva-r58d.vercel.app/`, // replace later
   credentials: true
 }));
 
